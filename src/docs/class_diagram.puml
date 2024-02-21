@@ -1,0 +1,63 @@
+@startuml
+
+' Define classes
+class Lekarz {
+  - id: int
+  - imie: String
+  - nazwisko: String
+  - specjalizacja: String
+}
+
+class Pacjent {
+  - id: int
+  - imie: String
+  - nazwisko: String
+  - numerTelefonu: String
+}
+
+class Wizyta {
+  - id: int
+  - data: LocalDate
+  - godzina: LocalTime
+  - lekarz: Lekarz
+  - pacjent: Pacjent
+}
+
+' Define services
+class SerwisWizyt {
+  + dodajWizyte(Wizyta wizyta): void
+  + usunWizyte(int id): void
+  + anulujWizyte(int id): void
+  + wyswietlWizyty(): List<Wizyta>
+}
+
+class SerwisLogowania {
+  + zalogujJakoLekarz(String): bool
+  + zalogujJakoPacjent(String): bool
+}
+
+class SerwisWyszukiwania {
+  + wyszukajWizyty(LocalDate): List<Wizyta>
+}
+
+' Define controllers
+class KontrolerUzytkownika {
+  + wykonajAkcje(): void
+}
+
+' Associations between classes and services
+SerwisWizyt --> Lekarz : creates & manages >
+SerwisWizyt --> Pacjent : creates & manages >
+SerwisWizyt --> Wizyta : creates & manages >
+SerwisLogowania --> Lekarz : authenticates >
+SerwisLogowania --> Pacjent : authenticates >
+SerwisWyszukiwania --> Wizyta : searches >
+KontrolerUzytkownika --> SerwisWizyt : uses >
+KontrolerUzytkownika --> SerwisLogowania : uses >
+KontrolerUzytkownika --> SerwisWyszukiwania : uses >
+
+' Associations between entities
+Lekarz "1" -- "0..*" Wizyta
+Pacjent "1" -- "0..*" Wizyta
+
+@enduml
