@@ -1,7 +1,6 @@
 package org.example.domain.model;
 
 import java.util.Objects;
-import org.apache.commons.codec.digest.DigestUtils;
 
 public abstract class User {
 
@@ -16,7 +15,7 @@ public abstract class User {
         this.name = name;
         this.surname = surname;
         this.nickName = nickName;
-        this.password = DigestUtils.md5Hex(password).toUpperCase();
+        this.password = password;
     }
 
     public String getName() {
@@ -47,11 +46,9 @@ public abstract class User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User user)) return false;
-        return  Objects.equals(name, user.name) &&
-                Objects.equals(surname, user.surname) &&
-                Objects.equals(nickName, user.nickName) &&
-                Objects.equals(password, user.password);
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return id == user.id && Objects.equals(name, user.name) && Objects.equals(surname, user.surname) && Objects.equals(nickName, user.nickName) && Objects.equals(password, user.password);
     }
 
     @Override
