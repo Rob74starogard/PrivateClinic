@@ -9,9 +9,11 @@ public abstract class User {
     private String surname;
     private String nickName;
     private String password;
+    public static int counter = 0;
 
     public User(String name, String surname, String nickName, String password) {
-        this.id = id;
+        this.id = counter;
+        User.counter++;
         this.name = name;
         this.surname = surname;
         this.nickName = nickName;
@@ -39,8 +41,7 @@ public abstract class User {
         return "User: " + "\n" +
                 "name: " + name + "\n" +
                 "surname: " + surname + "\n" +
-                "nickName: " + nickName + "\n" +
-                "password: " + password;
+                "nickName: " + nickName;
     }
 
     @Override
@@ -48,7 +49,10 @@ public abstract class User {
         if (this == o) return true;
         if (!(o instanceof User)) return false;
         User user = (User) o;
-        return id == user.id && Objects.equals(name, user.name) && Objects.equals(surname, user.surname) && Objects.equals(nickName, user.nickName) && Objects.equals(password, user.password);
+        return Objects.equals(name, user.name) &&
+                Objects.equals(surname, user.surname) &&
+                Objects.equals(nickName, user.nickName) &&
+                Objects.equals(password, user.password);
     }
 
     @Override

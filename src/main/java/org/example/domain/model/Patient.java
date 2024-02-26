@@ -16,6 +16,6 @@ public class Patient extends User {
 
     @Override
     public String toString() {
-        return super.toString() + "\nphone number: " + phoneNumber;
+        return super.toString() + "\nphone number: " + phoneNumber + "\n";
     }
 }

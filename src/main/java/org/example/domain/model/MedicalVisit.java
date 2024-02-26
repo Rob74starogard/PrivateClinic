@@ -19,6 +19,10 @@ public class MedicalVisit {
         this.patient = patient;
     }
 
+    public int getId() {
+        return id;
+    }
+
     public LocalDate getDate() {
         return date;
     }
@@ -35,13 +39,11 @@ public class MedicalVisit {
         return patient;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public void setPatient(Patient patient) {
         this.patient = patient;
     }
+
+    String medicalVisitStatus = patient == null ? "available" : "busy";
 
     @Override
     public String toString() {
@@ -49,6 +51,6 @@ public class MedicalVisit {
                 "date: " + date + "\n" +
                 "time: " + time + "\n" +
                 "doctor: " + doctor + "\n" +
-                "patient: " + patient;
+                "status: " +  medicalVisitStatus;
     }
 }

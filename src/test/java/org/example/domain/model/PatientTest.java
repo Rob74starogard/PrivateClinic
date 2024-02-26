@@ -1,6 +1,5 @@
 package org.example.domain.model;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,7 +13,6 @@ class PatientTest {
         String surname = "Nowak";
         String nickName = "PatientZN";
         String password = "Pzn2!";
-        String md5Hex = DigestUtils.md5Hex(password).toUpperCase();
         String phoneNumber = "777555333";
 
         //when
@@ -28,7 +26,7 @@ class PatientTest {
         assertThat(patient.getNickName()).isNotNull();
         assertThat(patient.getNickName()).isEqualTo(nickName);
         assertThat(patient.getPassword()).isNotNull();
-        assertThat(patient.getPassword()).isEqualTo(md5Hex);
+        assertThat(patient.getPassword()).isEqualTo(password);
         assertThat(patient.getPhoneNumber()).isNotNull();
         assertThat(patient.getPhoneNumber()).isEqualTo(phoneNumber);
     }
