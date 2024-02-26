@@ -1,124 +1,76 @@
 package org.example.models;
 
-import org.example.models.Doctor;
-import org.example.models.MedicalVisit;
-import org.example.models.Patient;
-
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.SocketHandler;
 
 public class UserInterface {
-    UInterfaceservices action = new UInterfaceservices();
 
-    public void run(List<Patient> patients, List<Doctor> Mds, List<MedicalVisit> visits) {
-        action.mainMenu();
-        switch (action.getValue()) {
+
+    public void run() {
+        mainMenu();
+        //logmenu
+        switch (getValue()) {
             case 1: {
-                doctorPath(patients, Mds, visits);
+                doctorPath();
                 break;
             }
             default: {
-                patientPath(patients, Mds, visits);
+                patientPath();
             }
         }
     }
 
-    boolean isDoctor;
-
-    public void run2(List<Patient> patients, List<Doctor> Mds, List<MedicalVisit> visits) {
-        action.mainMenu();
-        if (action.getValue() == 1) {
-            isDoctor = true;
-        } else {
-            isDoctor = false;
-        }
-        userPath(patients, Mds, visits, isDoctor);
-    }
-
-    private void userPath(List<Patient> patients, List<Doctor> Mds, List<MedicalVisit> visits, boolean isDoctor) {
-        boolean running = true;
-        while (running == true) {
-            if (isDoctor == true) {
-                action.Doclist(Mds);
-                action.chooseUser();
-                int docID = action.getValue();
-                action.Visitlist(Mds, patients, visits, docID, isDoctor);
-                action.Menudoctor();
-            }
-            if (isDoctor == false) {
-                action.Paclist(patients);
-                int docID = action.getValue();
-                action.Visitlist(Mds, patients, visits, docID, isDoctor);
-                action.Menupatient();
-            }
-
-        }
-
-    }
-
-    public  void doctorPath(List<Patient> patients, List<Doctor> Mds, List<MedicalVisit> visits) {
+    public void doctorPath() {
         boolean isRunning = true;
-        while (isRunning) {
-            boolean isDoctor = true;
-            action.Doclist(Mds);
-            action.chooseUser();
-            int userId = action.getValue();
-            action.Visitlist(Mds, patients, visits, userId, isDoctor);
-            action.Menudoctor();
-
-            switch (action.getValue()) {
-                case 1: {
-                    action.setVisit(Mds,patients, visits, userId, isDoctor);
-                    break;
-                }
-                case 2: {
-                    int pointer = 2;
-                    action.manageVisit(patients, visits, userId, pointer);
-                    break;
-                }
-                case 3: {
-                    int pointer = 3;
-                    action.manageVisit(patients, visits, userId, pointer);
-                    break;
-                }
-                default: {
-                    action.Visitlist(Mds, patients, visits, userId, isDoctor);
-                    isRunning = false;
-                }
-
+        Menudoctor();
+        switch (getValue()) {
+            case 1: {
+                System.out.println("Option 1");
+                break;
+            }
+            case 2: {
+                System.out.println("Option 2");
+                break;
+            }
+            case 3: {
+                System.out.println("Option 3");
+                break;
+            }
+            default: {
+                System.out.println("Option default");
+                isRunning = false;
             }
 
         }
+
     }
 
-    public void patientPath(List<Patient> patients, List<Doctor> Mds, List<MedicalVisit> visits) {
+
+    public void patientPath() {
         boolean isRunning = true;
-        action.Paclist(patients);
-        action.chooseUser();
-        int userId = action.getValue();
+
+        Menupatient();
+        int userId = getValue();
 
         while (isRunning) {
             boolean isDoctor = false;
             //action.Visitlist(Mds, patients, visits, userId, isDoctor);
-            action.Menupatient();
-            switch (action.getValue()) {
-                case 1: {
 
-                    action.Visitlist(Mds, patients, visits, userId, isDoctor);
+            switch (getValue()) {
+                case 1: {
+                    System.out.println("Option 1");
                     break;
                 }
                 case 2: {
-                    action.setVisit(Mds,patients, visits, userId, isDoctor);
+                    System.out.println("Option 2");
                     break;
                 }
                 case 3: {
-                    int pointer = 3;
-                    action.manageVisit(patients, visits, userId, pointer);
+                    System.out.println("Option 3");
                     break;
                 }
                 default: {
-                    action.Visitlist(Mds, patients, visits, userId, isDoctor);
+                    System.out.println("Default");
                     isRunning = false;
                 }
 
@@ -126,6 +78,36 @@ public class UserInterface {
 
         }
     }
+    public void chooseUser() {
+        System.out.println("Enter your id");
+    }
+
+    public void Menudoctor() {
+        System.out.println("1. Add visit date.");
+        System.out.println("2. Delete visit.");
+        System.out.println("3. Cancel visit.");
+        System.out.println("4. Review all visits");
+    }
+
+    public void Menupatient() {
+        System.out.println("1. Review Your visits");
+        System.out.println("2. Reserve a visit");
+        System.out.println("3. Search for possible visit dates");
+        System.out.println("4. Leave manu ");
+    }
+
+    public int getValue() {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Choice?");
+        int number = scan.nextInt();
+        return number;
+    }
+    public void mainMenu() {
+        System.out.println("(1)Doctor or (2)Patient ?");
+    }
 
 
 }
+
+
+
