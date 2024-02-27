@@ -40,23 +40,49 @@ class MedicalVisitServiceTest {
     }
 
     @Test
+    public void should_make_a_doctor_appointment_successfully() {
+        //given
+        int id = medicalVisitServiceSuT.getMedicalVisits().get(0).getId();
+
+        //when
+        medicalVisitServiceSuT.makeADoctorAppointment(id, patient);
+
+        //then
+        assertThat(medicalVisitServiceSuT.getMedicalVisits().get(0).getPatient()).isEqualTo(patient);
+    }
+
+    @Test
+    public void should_not_allow_to_make_a_doctor_appointment_when_an_appointment_is_not_available() {
+        //given
+        int id = medicalVisitServiceSuT.getMedicalVisits().get(0).getId();
+        medicalVisitServiceSuT.makeADoctorAppointment(id, patient);
+
+        //when
+        Throwable thrown = catchThrowable(() -> medicalVisitServiceSuT.makeADoctorAppointment(id, patient));
+
+        //then
+        assertThat(thrown)
+                .isInstanceOf(RuntimeException.class)
+                .hasMessageContaining("Sorry, the selected date is not available!");
+    }
+
+    @Test
     public void should_add_a_medical_visit_successfully() {
         //given
-        MedicalVisit medicalVisit = new MedicalVisit(date, time, doctor, patient);
+        MedicalVisit medicalVisit = new MedicalVisit(date, LocalTime.of(9, 30), doctor, null);
 
         //when
         medicalVisitServiceSuT.addAMedicalVisit(medicalVisit);
 
         //then
         assertThat(medicalVisitServiceSuT.getMedicalVisits()).isNotEmpty();
-        assertThat(medicalVisitServiceSuT.getVisitByDateTimeDoctor(date, time, doctor).
-                getPatient().toString()).isEqualTo(patient.toString());
+        assertThat(medicalVisitServiceSuT.getMedicalVisits().contains(medicalVisit)).isEqualTo(true);
     }
 
     @Test
     public void should_not_allow_to_add_a_medical_visit_with_incomplete_data() {
         //given
-        MedicalVisit medicalVisit = new MedicalVisit(date, time, doctor, null);
+        MedicalVisit medicalVisit = new MedicalVisit(date, time, null, null);
 
         //when
         Throwable thrown = catchThrowable(() -> medicalVisitServiceSuT.addAMedicalVisit(medicalVisit));
@@ -69,9 +95,9 @@ class MedicalVisitServiceTest {
     }
 
     @Test
-    public void should_not_allow_to_add_a_medical_visit_with_incorrect_data() {
+    public void should_not_allow_to_add_a_medical_visit_if_one_already_exists() {
         //given
-        MedicalVisit medicalVisit = new MedicalVisit(date, LocalTime.of(13, 0), doctor, patient);
+        MedicalVisit medicalVisit = new MedicalVisit(date, LocalTime.of(8, 0), doctor, null);
 
         //when
         Throwable thrown = catchThrowable(() -> medicalVisitServiceSuT.addAMedicalVisit(medicalVisit));
@@ -79,8 +105,8 @@ class MedicalVisitServiceTest {
         //then
         assertThat(thrown)
                 .isInstanceOf(RuntimeException.class)
-                .hasMessageContaining("Sorry, it is not possible to add a medical visit, " +
-                        "the entered data is incorrect!");
+                .hasMessageContaining("Sorry, it is not possible to add a medical visit, the " +
+                        "given visit already exists!");
     }
 
     @Test
@@ -114,8 +140,8 @@ class MedicalVisitServiceTest {
     @Test
     public void should_cancel_a_medical_visit_successfully() {
         //given
-        medicalVisitServiceSuT.addAMedicalVisit(new MedicalVisit(date, time, doctor, patient));
-        int id = medicalVisitServiceSuT.getVisitByDateTimeDoctor(date, time, doctor).getId();
+        int id = medicalVisitServiceSuT.getMedicalVisits().get(0).getId();
+        medicalVisitServiceSuT.makeADoctorAppointment(id, patient);
 
         //when
         medicalVisitServiceSuT.cancelMedicalVisit(id);

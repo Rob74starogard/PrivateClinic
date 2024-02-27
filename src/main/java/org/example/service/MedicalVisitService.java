@@ -2,6 +2,7 @@ package org.example.service;
 
 import org.example.domain.model.Doctor;
 import org.example.domain.model.MedicalVisit;
+import org.example.domain.model.Patient;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -41,18 +42,32 @@ public class MedicalVisitService {
         return medicalVisits;
     }
 
+    public void makeADoctorAppointment(int id, Patient patient) {
+        int index = medicalVisits.indexOf(getById(id));
+        if (index == -1) {
+            throw new RuntimeException("Sorry, it is not possible to make an medical visit with " +
+                    "the given id!");
+        }
+        if (medicalVisits.get(index).getPatient() != null) {
+            throw new RuntimeException("Sorry, the selected date is not available!");
+        }
+        medicalVisits.get(index).setPatient(patient);
+    }
+
     public void addAMedicalVisit(MedicalVisit medicalVisit) {
-        if (medicalVisit.getPatient() == null) {
+        if (medicalVisit.getDate() == null ||
+                medicalVisit.getTime() == null ||
+                medicalVisit.getDoctor() == null) {
             throw new RuntimeException("Sorry, it is not possible to add a medical visit, the " +
                     "entered data is incomplete!");
         }
         int index = medicalVisits.indexOf(getVisitByDateTimeDoctor(medicalVisit.getDate(),
                 medicalVisit.getTime(), medicalVisit.getDoctor()));
-        if (index == -1) {
+        if (index != -1) {
             throw new RuntimeException("Sorry, it is not possible to add a medical visit, the " +
-                    "entered data is incorrect!");
+                    "given visit already exists!");
         }
-        medicalVisits.get(index).setPatient(medicalVisit.getPatient());
+        medicalVisits.add(medicalVisit);
     }
 
     public void deleteMedicalVisit(int id) {
@@ -71,13 +86,14 @@ public class MedicalVisitService {
             throw new RuntimeException("Sorry, it is not possible to cancel a medical visit with " +
                     "the given id!");
         }
-        MedicalVisit medicalVisit = medicalVisits.get(index);
         medicalVisits.get(medicalVisits.indexOf(getById(id))).setPatient(null);
     }
 
-    public MedicalVisit viewMedicalVisits() {
+    public MedicalVisit viewMedicalVisits(boolean viewForTheDoctor) { // true for the doctor in UserInterface
         for (MedicalVisit medicalVisit : medicalVisits) {
-            System.out.println(medicalVisit);
+            if (viewForTheDoctor || medicalVisit.getPatient() == null) {
+                System.out.println(medicalVisit);
+            }
         }
         return null;
     }
