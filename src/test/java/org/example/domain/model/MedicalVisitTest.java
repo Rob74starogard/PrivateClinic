@@ -12,8 +12,8 @@ class MedicalVisitTest {
     @Test
     public void should_successfully_create_the_medical_visit() {
         //given
-        LocalDate date = LocalDate.of(2024, 2, 22);
-        LocalTime time = LocalTime.of(14, 0);
+        LocalDate date = LocalDate.of(2024, 2, 23);
+        LocalTime time = LocalTime.of(9, 30);
         Doctor doctor = new Doctor(
                 "Maria",
                 "Kowalska",

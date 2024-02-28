@@ -24,8 +24,9 @@ public class Doctor extends User {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Doctor doctor)) return false;
+        if (!(o instanceof Doctor)) return false;
         if (!super.equals(o)) return false;
+        Doctor doctor = (Doctor) o;
         return Objects.equals(specialization, doctor.specialization);
     }
 

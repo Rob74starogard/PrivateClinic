@@ -10,13 +10,19 @@ public class MedicalVisit {
     private LocalTime time;
     private final Doctor doctor;
     private Patient patient;
+    public static int counter = 0;
 
     public MedicalVisit(LocalDate date, LocalTime time, Doctor doctor, Patient patient) {
-        this.id = id;
+        this.id = counter;
+        MedicalVisit.counter++;
         this.date = date;
         this.time = time;
         this.doctor = doctor;
         this.patient = patient;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public LocalDate getDate() {
@@ -35,10 +41,6 @@ public class MedicalVisit {
         return patient;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public void setPatient(Patient patient) {
         this.patient = patient;
     }
@@ -48,7 +50,6 @@ public class MedicalVisit {
         return "MedicalVisit: " + "\n" +
                 "date: " + date + "\n" +
                 "time: " + time + "\n" +
-                "doctor: " + doctor + "\n" +
-                "patient: " + patient;
+                "doctor: " + doctor;
     }
 }
